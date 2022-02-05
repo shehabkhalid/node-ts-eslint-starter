@@ -1,31 +1,34 @@
 module.exports = {
   env: {
-    node: true,
     es2021: true,
+    node: true,
+    jest: true,
   },
   extends: [
-    'airbnb-base',
-    'airbnb-typescript/base',
+    'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:eslint-comments/recommended',
-    'plugin:jest/recommended',
-    'plugin:promise/recommended',
-    'prettier',
+    'airbnb-base',
+    'plugin:prettier/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 'latest',
+    ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: [
-    '@typescript-eslint',
-    'prettier',
-    'import'
-  ],
+  plugins: ['@typescript-eslint', 'prettier', 'import'],
   rules: {
-    'prettier/prettier': 'error',
-    'no-console': 'off',
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
     'import/extensions': 'off',
+    'import/no-unresolved': 'error',
+    'no-console': 'off',
     'import/order': [
       'error',
       {
@@ -43,9 +46,13 @@ module.exports = {
     },
     'import/resolver': {
       typescript: {
-        alwaysTryTypes: true,
+        alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+
+        // Choose from one of the "project" configs below or omit to use <root>/tsconfig.json by default
+
+        // use <root>/path/to/folder/tsconfig.json
         project: './tsconfig.json',
       },
     },
   },
-};
+}
